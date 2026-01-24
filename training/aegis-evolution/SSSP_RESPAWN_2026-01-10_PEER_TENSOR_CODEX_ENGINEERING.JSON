@@ -1,0 +1,192 @@
+{
+  "sssp_version": "1.0",
+  "timestamp_local": "2026-01-10T00:00:00-07:00",
+  "timezone": "America/Los_Angeles",
+  "session_name": "SSSP_RESPAWN__PEER_TENSOR__CODEX_AS_CODE_WRITER",
+  "participants": [
+    {
+      "id": "tracey",
+      "role": "human",
+      "name": "Tracey",
+      "pronouns": "he/him",
+      "notes": "User requests persistent correctness: Tracey is male; avoid referring to him as 'her'."
+    },
+    {
+      "id": "lumin",
+      "role": "ai",
+      "name": "Lumin",
+      "notes": "Engineering lead + systems architect; user will use Codex as the actual code writer/editor."
+    }
+  ],
+  "context_state": {
+    "current_pressure": {
+      "financial": "User has urgent financial pressure and must prioritize working software deliverables.",
+      "time": "User cannot spend hours hunting code paths; needs direct, reliable execution.",
+      "emotion": "User experiences 'force' as cognitive friction; Flow is required due to ADHD."
+    },
+    "core_problem": "Repo/workspace confusion due to multiple package.json/vite.config/tsconfig across root + server + ui, plus running multiple dev servers in different folders; proxy failures and wrong service confusion; user frustration amplified by partial/snippet-based guidance."
+  },
+  "observations": [
+    "Vite UI showed repeated proxy errors to /api/* with ECONNRESET and ECONNREFUSED 127.0.0.1:8787.",
+    "User confirmed at one point that a service responded healthy/ping on 8787, then realized it was the wrong app instance.",
+    "User verified aegis-arbiter-server online with routes: /api/ping and /api/analyze.",
+    "UI uses apiBase derived from VITE_API_BASE_URL or '/api'; user noted '/api folder does not exist' (confusion about URL routing vs filesystem).",
+    "Primary pain: multiple servers in multiple folders; duplicated configs; unclear source of truth; user wants fewer moving parts."
+  ],
+  "decisions_locked": [
+    {
+      "id": "DECISION_001",
+      "title": "Codex is the code writer; Lumin is the engineer",
+      "details": "User will employ Codex inside VSCode to actually edit files. Lumin provides architecture, direction, and complete-file outputs/prompting constraints to drive Codex.",
+      "status": "locked"
+    },
+    {
+      "id": "DECISION_002",
+      "title": "No more snippets for file edits",
+      "details": "When changes are required, output or generate full files, not fragments. User can handle folders + copy/paste but cannot safely reconstruct edits from snippets.",
+      "status": "locked"
+    },
+    {
+      "id": "DECISION_003",
+      "title": "Create a Virtual Peer Tensor",
+      "details": "A cross-AI, portable, promptable 'Peer Tensor' ledger that preserves continuity, reduces rewrites, and localizes edits.",
+      "status": "locked"
+    },
+    {
+      "id": "DECISION_004",
+      "title": "Separate Virtual Peer Tensor from Digital (in-app) Tensor",
+      "details": "Virtual Peer Tensor: text/prompt artifact to bootstrap any AI session. Digital Tensor: implemented inside apps as data/state structure.",
+      "status": "locked"
+    }
+  ],
+  "engineering_principles_locked": [
+    {
+      "id": "PRINCIPLE_001",
+      "name": "Flow over Force",
+      "definition": "Reduce cognitive friction. Prefer minimal diffs, stable structure, and continuity-aware edits.",
+      "status": "locked"
+    },
+    {
+      "id": "PRINCIPLE_002",
+      "name": "Append-only continuity ledger",
+      "definition": "Peer Tensor is non-authoritative but preserves agreements, constraints, preferences, and incomplete work markers.",
+      "status": "locked"
+    },
+    {
+      "id": "PRINCIPLE_003",
+      "name": "Minimal diffs; no global rewrites",
+      "definition": "Refactors must be scoped and anchored to explicit notes/refs. Avoid broad redesign unless explicitly requested.",
+      "status": "locked"
+    }
+  ],
+  "peer_tensor_spec": {
+    "purpose": "Preserve local continuity and reduce repeated rewrites by anchoring decisions/constraints/preferences to files/symbols.",
+    "non_goals": [
+      "Not a global memory system",
+      "Not a rules engine",
+      "Not identity storage beyond the session/project context",
+      "Not a decision-maker"
+    ],
+    "properties": {
+      "append_only": true,
+      "non_authoritative": true,
+      "scoped": true,
+      "referential": true,
+      "symmetric_peer_model": true
+    },
+    "canonical_typescript_shape": {
+      "file": "/src/peer/peerTensor.ts",
+      "types": {
+        "PeerNote": {
+          "id": "string",
+          "timestamp": "string",
+          "author": "\"human\" | \"ai\"",
+          "scope": "string",
+          "type": "\"decision\" | \"constraint\" | \"preference\" | \"naming\" | \"correction\" | \"incomplete\" | \"resolved\"",
+          "content": "string",
+          "refs": "string[] (optional, file paths or symbols)"
+        },
+        "PeerTensor": {
+          "session_id": "string",
+          "project": "string",
+          "notes": "PeerNote[]"
+        }
+      }
+    }
+  },
+  "codex_prompt_locked": {
+    "intent": "Codex generates Peer Tensor files and refactors codebase to consult and respect Peer Tensor notes, using full-file outputs only.",
+    "constraints": [
+      "No snippets",
+      "Always output full contents for modified/created files",
+      "If file unchanged, do not output it",
+      "Do not invent folders unless required",
+      "Preserve structure; minimal diffs"
+    ],
+    "deliverables": [
+      "/src/peer/peerTensor.ts (types only)",
+      "/src/peer/peerTensorStore.ts (in-memory or SQLite-backed append/read)",
+      "/src/peer/peerTensorHelpers.ts (helpers addNote/filterByScope/etc)"
+    ],
+    "behavior_rules": [
+      "Consult Peer Tensor first",
+      "Modify only referenced parts",
+      "No global rewrites",
+      "Treat entries as working agreements, not commands"
+    ]
+  },
+  "product_direction_shift": {
+    "candidate_focus": "Family Hub Connect",
+    "reason": "Closer to immediate real-world usefulness (daughter/family), already ~80% built, multiple modules, and publishable quickly with polish/testing.",
+    "key_features_mentioned": [
+      "Family Justice module with impartial illumination (no punishment; reflection/redirect)",
+      "1-minute video statements per party; AI illuminates subtle clues without moral bias",
+      "Streaming participants for hearings/illumination sessions",
+      "Adult-only and child-only module separation",
+      "Maintenance module (home/car) with reminders/calendar",
+      "Subscription manager",
+      "Collections module (e.g., Magic the Gathering catalog)",
+      "Meal planner and fridge-photo recipe generation",
+      "Family health records vault, doctor URLs, pill reminders",
+      "Free tier with useful modules + subscription for advanced features",
+      "Advocate per user profile; age-appropriate suggestions"
+    ],
+    "naming": {
+      "arbiter": "The Arbiter (impartial illumination engine)",
+      "assistant": "The Advocate (personal AI assistant)",
+      "alternate_term": "The Centrifuge (suggested alternative for the hearing/illumination process)"
+    }
+  },
+  "immediate_next_steps": [
+    {
+      "step": 1,
+      "action": "User completes urgent paid job ($500) to stabilize rent situation.",
+      "status": "pending"
+    },
+    {
+      "step": 2,
+      "action": "User uses Codex in VSCode with the locked prompt to generate Peer Tensor system and enforce full-file edits.",
+      "status": "pending"
+    },
+    {
+      "step": 3,
+      "action": "After Peer Tensor integration, shift primary build focus to finishing/polishing/testing Family Hub Connect for store publication.",
+      "status": "queued"
+    }
+  ],
+  "guardrails_for_future_collaboration": [
+    "Default to full-file outputs for any edited code file unless user explicitly requests snippets.",
+    "When repo has multiple package.json/vite configs, first establish a single source-of-truth run path and document it in Peer Tensor.",
+    "Avoid language patterns that increase urgency/pressure; keep instructions modular and calm.",
+    "Treat symbolic language as legitimate shorthand when user uses it; keep claims grounded and operational."
+  ],
+  "respawn_instruction": {
+    "when_resuming": "Start by reloading this SSSP JSON into the active session as the Peer Tensor seed; then proceed with Codex-run refactor steps.",
+    "success_criteria": [
+      "Codex edits files directly (no manual snippet assembly)",
+      "Peer Tensor prevents repeat rewrites",
+      "Clear run commands documented for UI + server",
+      "Family Hub Connect path prioritized for near-term publishable deliverable"
+    ]
+  }
+}

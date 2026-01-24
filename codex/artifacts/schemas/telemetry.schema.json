@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Telemetry Event",
+  "type": "object",
+  "required": [
+    "ts",
+    "session_id",
+    "mode",
+    "lens",
+    "tension",
+    "tags",
+    "payload",
+    "source"
+  ],
+  "properties": {
+    "ts": {
+      "type": "string"
+    },
+    "session_id": {
+      "type": "string"
+    },
+    "mode": {
+      "type": "string"
+    },
+    "lens": {
+      "type": "object"
+    },
+    "tension": {
+      "type": "string"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "payload": {},
+    "source": {
+      "type": "string"
+    }
+  }
+}

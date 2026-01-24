@@ -1,0 +1,40 @@
+You are building a repository scaffold and initial implementation for an "AEGIS Codex Environment" from a requirements JSON specification.
+
+INPUT:
+- You will be given a JSON file called codex_requirements.json (included below).
+
+GOAL:
+- Generate a complete repository structure with initial files and runnable TypeScript CLI.
+- Prioritize quality over efficiency.
+- Implement deterministic, append-only logging and hash-chaining where specified.
+
+HARD CONSTRAINTS:
+- Do not invent new requirements. Follow codex_requirements.json exactly.
+- No partial snippets: output FULL contents for every file you create or modify.
+- Use TypeScript (Node.js) with strict typing (no "any").
+- Evidence logs must be JSONL under evidence/runs/<timestamp>/telemetry.jsonl.
+- Peer Tensor must be append-only in SQLite with hash_prev/hash_self chaining.
+- Provide a "validate" CLI command that checks:
+  1) required files exist
+  2) SSSP files match schema fields (even if stored as markdown, validate required headings/sections)
+  3) append-only paths are not rewritten (basic check: detect file modification within run folder; prefer writing new run folder)
+  4) peer_tensor hash chain integrity
+
+DELIVERABLES:
+1) Full folder tree with all required markdown files stubbed with meaningful content (not lorem ipsum).
+2) /engine/src implementation for:
+   - telemetry emitter (jsonl)
+   - sqlite storage and migrations
+   - peer tensor repository
+   - CLI commands: lint, sssp:create, tensor:add, replay, validate
+3) Basic tests for:
+   - hash chaining correctness
+   - validate command detects missing required files
+4) README-style instructions inside ops/CONTRIBUTING.md describing how to run.
+
+OUTPUT FORMAT:
+- Print a list of files created.
+- Then provide each file path followed by its full content.
+
+HERE IS codex_requirements.json:
+<paste the JSON here>
