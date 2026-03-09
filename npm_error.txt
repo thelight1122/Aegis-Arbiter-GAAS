@@ -1,0 +1,77 @@
+﻿node.exe : npm warn 
+deprecated prebuild-ins
+tall@7.1.3: No longer 
+maintained. Please 
+contact the author of 
+the relevant native 
+addon; alternatives 
+are available.
+At line:1 char:1
++ & "C:\Program 
+Files\nodejs/node.exe" 
+"C:\Program 
+Files\nodejs/node_mo 
+...
++ ~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~
+    + CategoryInfo     
+         : NotSpecifi  
+  ed: (npm warn depr   
+ ec... are availabl    
+e.:String) [], Rem    
+oteException
+    + FullyQualifiedEr 
+   rorId : NativeComm  
+  andError
+ 
+npm error code 1
+npm error path H:\aegis
+-arbiter-GAAS\node_modu
+les\better-sqlite3
+npm error command 
+failed
+npm error command C:\Wi
+ndows\System32\WindowsP
+owerShell\v1.0\powershe
+ll.exe -c 
+prebuild-install || 
+node-gyp rebuild 
+--release
+npm error At line:1 
+char:18
+npm error + 
+prebuild-install || 
+npm error node-gyp 
+rebuild 
+npm error --release
+npm error +            
+      ~~
+npm error The token 
+'||' is not 
+npm error a valid 
+statement 
+npm error separator in 
+this 
+npm error version.
+npm error     + 
+CategoryInfo     
+npm error          : 
+ParserErro  
+npm error   r: (:) [], 
+ParentC   
+npm error  
+ontainsErrorRecord    
+npm error Exception
+npm error     + 
+FullyQualifiedEr 
+npm error    rorId : 
+InvalidEnd  
+npm error   OfLine
+npm error A complete 
+log of this run can be 
+found in: C:\Users\thel
+i\AppData\Local\npm-cac
+he\_logs\2026-03-09T23_
+40_56_964Z-debug-0.log

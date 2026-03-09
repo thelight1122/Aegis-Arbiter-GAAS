@@ -1,0 +1,22 @@
+﻿{
+  "name": "aegis-arbiter-server",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+ "scripts": {
+  "build": "tsc -p tsconfig.json",
+  "dev": "npm run build; node --watch --enable-source-maps dist/index.js",
+  "start": "node dist/index.js"
+
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "@ljharb/tsconfig": "^0.3.2",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "typescript": "^5.6.3"
+  }
+}
