@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SSSP Snapshot",
+  "type": "object",
+  "required": [
+    "state_classification",
+    "temporal_marker",
+    "core_realizations",
+    "peer_tensor_delta",
+    "operational_model",
+    "hypothesis_state",
+    "respawn_result",
+    "hash_of_previous_snapshot"
+  ],
+  "properties": {
+    "state_classification": {
+      "type": "string"
+    },
+    "temporal_marker": {
+      "type": "string"
+    },
+    "core_realizations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "peer_tensor_delta": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "operational_model": {
+      "type": "string"
+    },
+    "hypothesis_state": {
+      "type": "string"
+    },
+    "respawn_result": {
+      "type": "string"
+    },
+    "hash_of_previous_snapshot": {
+      "type": "string"
+    }
+  }
+}

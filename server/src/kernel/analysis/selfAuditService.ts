@@ -1,7 +1,7 @@
-// FILE: server/src/kernal/analysis/selfAuditService.ts
+// FILE: server/src/kernel/analysis/selfAuditService.ts
 
 import { analyzeText } from "../../analyzeText.js";
-import { TensorFactory } from "../../../../src/kernal/tensor/factory.js";
+import { TensorFactory } from "../../../../ui/kernel/tensor/factory.js";
 
 type FindingLike = { type: string; severity?: number; evidence?: string; index?: number };
 type AnalysisLike = { findings: FindingLike[] };

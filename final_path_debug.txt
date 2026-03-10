@@ -1,0 +1,79 @@
+﻿[SERVER] Detected repoRoot: h:\aegis-arbiter-GAAS\server\dist
+[SERVER] Absolute schemaPath: h:\aegis-arbiter-GAAS\server\dist\ui\kernel\storage\schema.sql
+node : [SERVER] Schema 
+file NOT FOUND at runtime!
+At line:1 char:109
++ ...  $env:PATH; node h:\a
+egis-arbiter-GAAS\server\di
+st\server\src\index.j ...
++                 ~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo         
+     : NotSpecified: ([SE  
+  RVER] Schema...UND at    
+ runtime!:String) [], R    
+emoteException
+    + FullyQualifiedErrorI 
+   d : NativeCommandError
+ 
+[SERVER] Storage dir contents: [
+  'auditBridge.d.ts',
+  'auditBridge.js',
+  'auditBridge.js.map',
+  'bookcaseService.d.ts',
+  'bookcaseService.js',
+  'bookcaseService.js.map',
+  'contextAnchor.d.ts',
+  'contextAnchor.js',
+  'contextAnchor.js.map',
+  'patternCatalog.d.ts',
+  'patternCatalog.js',
+  'patternCatalog.js.map',
+  'resetServices.d.ts',
+  'resetServices.js',
+  'resetServices.js.map',
+  'tensorRepository.d.ts',
+  'tensorRepository.js',
+  'tensorRepository.js.map',
+  'vectorDb.d.ts',
+  'vectorDb.js',
+  'vectorDb.js.map'
+]
+node:fs:442
+    return 
+binding.readFileUtf8(path, 
+stringToFlags(options.flag)
+);
+                   ^
+
+Error: ENOENT: no such 
+file or directory, open 'h:
+\aegis-arbiter-GAAS\server\
+dist\ui\kernel\storage\sche
+ma.sql'
+    at Object.readFileSync 
+(node:fs:442:20)
+    at file:///h:/aegis-arb
+iter-GAAS/server/dist/serve
+r/src/index.js:52:22
+    at ModuleJob.run (node:
+internal/modules/esm/module
+_job:271:25)
+    at async onImport.trace
+Promise.__proto__ (node:int
+ernal/modules/esm/loader:54
+7:26)
+    at async asyncRunEntryP
+ointWithESMLoader (node:int
+ernal/modules/run_main:116:
+5) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'h:\\aegis-arbiter-
+GAAS\\server\\dist\\ui\\ker
+nel\\storage\\schema.sql'
+}
+
+Node.js v22.13.1

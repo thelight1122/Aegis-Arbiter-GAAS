@@ -1,0 +1,48 @@
+# Dependencies
+node_modules/
+**/node_modules/
+.venv/
+env/
+venv/
+ENV/
+
+# Build artifacts
+dist/
+**/dist/
+build/
+**/build/
+out/
+**/out/
+
+# Environment Variables
+.env
+.env.local
+.env.*.local
+
+# IDEs and Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS related files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+**/logs/
+run_log*
+build_errors.txt
+git_status_*.txt
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Databases
+*.sqlite
+*.db
+

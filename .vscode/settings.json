@@ -16,5 +16,10 @@
   },
 
   "webhint.enable": false,
-  "CodeGPT.apiKey": "LM Studio"
+  "CodeGPT.apiKey": "LM Studio",
+  "chatgpt.runCodexInWindowsSubsystemForLinux": true,
+  "git.autofetch": true,
+  "git.enabled": true,
+  "geminicodeassist.agentYoloMode": true,
+  "geminicodeassist.agentDebugMode": true
 }

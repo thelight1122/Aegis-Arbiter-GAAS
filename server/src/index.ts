@@ -4,20 +4,40 @@ import cors from "cors";
 import Database from "better-sqlite3";
 import fs from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 import { runAegisCli } from "./cliRunner.js";
 import { ledgerMiddleware } from "./ledger.js";
 
-import { ArbiterOrchestrator } from "../../src/kernal/orchestrator.js";
-import { TensorRepository } from "../../src/kernal/storage/tensorRepository.js";
-import { ResonanceService } from "../../src/kernal/analysis/resonanceServices.js";
-import { MirrorManager } from "../../src/modules/mirror/mirrorManager.js";
-import { SovereigntyProgressService } from "../../src/modules/mirror/progressService.js";
-import { witnessEmitter } from "../../src/witness.js";
+import { ArbiterOrchestrator } from "../../ui/kernel/orchestrator.js";
+import { TensorRepository } from "../../ui/kernel/storage/tensorRepository.js";
+import { ResonanceService } from "../../ui/kernel/analysis/resonanceServices.js";
+import { MirrorManager } from "../../ui/src/modules/mirror/mirrorManager.js";
+import { SovereigntyProgressService } from "../../ui/src/modules/mirror/progressService.js";
+import { witnessEmitter } from "../../ui/src/witness.js";
 
 const app = express();
 
-const dbPath = path.join(process.cwd(), "data", "aegis-kernel.sqlite");
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+function findRepoRoot(startDir: string): string {
+  let current = startDir;
+  while (current !== path.dirname(current)) {
+    // Check for repo markers (ui/server) BUT ensure we aren't inside a 'dist' folder
+    if (fs.existsSync(path.join(current, "ui")) && 
+        fs.existsSync(path.join(current, "server")) &&
+        !current.toLowerCase().endsWith("dist")) {
+      return current;
+    }
+    current = path.dirname(current);
+  }
+  return startDir; // fallback
+}
+
+const repoRoot = findRepoRoot(__dirname);
+
+const dbPath = path.join(repoRoot, "data", "aegis-kernel.sqlite");
 const dbDir = path.dirname(dbPath);
 if (!fs.existsSync(dbDir)) {
   fs.mkdirSync(dbDir, { recursive: true });
@@ -26,9 +46,8 @@ const db = new Database(dbPath);
 db.pragma("journal_mode = WAL");
 db.pragma("foreign_keys = ON");
 
-// NOTE: This path assumes you're running the server with CWD=server/
-// and that the schema lives at: ../src/kernal/storage/schema.sql
-const schemaPath = path.join(process.cwd(), "..", "src", "kernal", "storage", "schema.sql");
+// Schema always resolves from repo root
+const schemaPath = path.resolve(repoRoot, "ui", "kernel", "storage", "schema.sql");
 const schemaSql = fs.readFileSync(schemaPath, "utf8");
 db.exec(schemaSql);
 db.exec("CREATE TABLE IF NOT EXISTS sessions (id TEXT PRIMARY KEY);");

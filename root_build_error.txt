@@ -1,0 +1,120 @@
+﻿
+> aegis-arbiter@0.1.0 build
+> npm-run-all build:server build:ui
+
+
+> aegis-arbiter@0.1.0 build:server
+> npm run build -w aegis-arbiter-server
+
+
+> aegis-arbiter-server@0.1.0 build
+> tsc -p tsconfig.json
+
+
+> aegis-arbiter@0.1.0 build:ui
+> npm run build -w aegis-arbiter-ui
+
+
+> aegis-arbiter-ui@0.1.0 build
+> npm-run-all build-ts build-vite
+
+
+> aegis-arbiter-ui@0.1.0 build-ts
+> npx tsc
+
+
+> aegis-arbiter-ui@0.1.0 build-vite
+> npx vite build
+
+node.exe : node:internal/mo
+dules/cjs/loader:1451
+At line:1 char:1
++ & "C:\Program 
+Files\nodejs/node.exe" 
+"C:\Program 
+Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~
+    + CategoryInfo         
+     : NotSpecified: (nod  
+  e:internal/modules/cjs   
+ /loader:1451:String) [    
+], RemoteException
+    + FullyQualifiedErrorI 
+   d : NativeCommandError
+ 
+  throw err;
+  ^
+
+Error: Cannot find module '
+H:\aegis-arbiter-GAAS\node_
+modules\aegis-arbiter-ui\no
+de_modules\vite\bin\vite.js
+'
+    at 
+Module._resolveFilename (no
+de:internal/modules/cjs/loa
+der:1448:15)
+    at defaultResolveImpl (
+node:internal/modules/cjs/l
+oader:1059:19)
+    at 
+resolveForCJSWithHooks (nod
+e:internal/modules/cjs/load
+er:1064:22)
+    at Module._load (node:i
+nternal/modules/cjs/loader:
+1234:25)
+    at 
+TracingChannel.traceSync (n
+ode:diagnostics_channel:328
+:14)
+    at wrapModuleLoad (node
+:internal/modules/cjs/loade
+r:245:24)
+    at Module.executeUserEn
+tryPoint [as runMain] (node
+:internal/modules/run_main:
+154:5)
+    at node:internal/main/r
+un_main_module:33:47 {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: []
+}
+
+Node.js v24.13.1
+npm error Lifecycle script 
+`build-vite` failed with 
+error:
+npm error code 1
+npm error path 
+H:\aegis-arbiter-GAAS\ui
+npm error workspace 
+aegis-arbiter-ui@0.1.0
+npm error location 
+H:\aegis-arbiter-GAAS\ui
+npm error command failed
+npm error command C:\Window
+s\System32\WindowsPowerShel
+l\v1.0\powershell.exe -c 
+npx vite build
+ERROR: "build-vite" exited 
+with 1.
+npm error Lifecycle script 
+`build` failed with error:
+npm error code 1
+npm error path 
+H:\aegis-arbiter-GAAS\ui
+npm error workspace 
+aegis-arbiter-ui@0.1.0
+npm error location 
+H:\aegis-arbiter-GAAS\ui
+npm error command failed
+npm error command C:\Window
+s\System32\WindowsPowerShel
+l\v1.0\powershell.exe -c 
+npm-run-all build-ts 
+build-vite
+ERROR: "build:ui" exited 
+with 1.

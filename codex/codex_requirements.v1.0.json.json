@@ -1,0 +1,152 @@
+{
+  "project": {
+    "name": "AEGIS Codex Environment",
+    "version": "v1.0",
+    "priority": "quality_over_efficiency",
+    "principles": [
+      "append_only_for_history",
+      "privacy_by_design_not_secrecy",
+      "no_punishment_no_enforcement",
+      "reflection_routing_indexing_over_denial",
+      "everything_addressable_validatable_diffable_replayable"
+    ]
+  },
+  "architecture": {
+    "layers": [
+      { "name": "canon", "purpose": "locked truths and definitions" },
+      { "name": "protocols", "purpose": "operational rules and loops (SSSP, IDS, LINT)" },
+      { "name": "artifacts", "purpose": "snapshots, decisions, schemas" },
+      { "name": "runtime", "purpose": "engine that executes lens/arbiter/tensors/telemetry" },
+      { "name": "evidence", "purpose": "append-only logs and run outputs (jsonl, findings, summaries)" }
+    ],
+    "client_server_model": {
+      "client": {
+        "name": "Lens",
+        "responsibilities": ["PIM", "filters", "routing"],
+        "rules": ["no_denial_only_redirection", "predictable_calm_mechanical"]
+      },
+      "server": {
+        "name": "Engine+Telemetry",
+        "components": ["AEGIS_Arbiter", "Peer_Tensor", "IDS_loops"],
+        "rules": ["no_punishment_no_enforcement"]
+      }
+    }
+  },
+  "repository_layout": {
+    "root_dirs": ["codex", "engine", "evidence", "ops"],
+    "codex": {
+      "dirs": ["canon", "protocols", "artifacts/sssp", "artifacts/decisions", "artifacts/schemas", "maps"],
+      "required_files": [
+        "canon/AEGIS_CANON.md",
+        "canon/GLOSSARY.md",
+        "canon/BOUNDARIES.md",
+        "protocols/SSSP.md",
+        "protocols/IDS.md",
+        "protocols/LINT.md",
+        "maps/SYSTEM_MAP.md",
+        "maps/DATA_FLOW.md",
+        "CODEX_LOCKS.md"
+      ]
+    },
+    "engine": {
+      "language": "TypeScript",
+      "runtime": "Node.js",
+      "dirs": [
+        "src/lens",
+        "src/arbiter",
+        "src/tensors",
+        "src/telemetry",
+        "src/storage/sqlite",
+        "src/cli",
+        "tests",
+        "migrations",
+        "configs"
+      ],
+      "requirements": [
+        "tsconfig strict true",
+        "no_any",
+        "clear interfaces for storage and telemetry",
+        "CLI is primary truth interface"
+      ]
+    },
+    "evidence": {
+      "dirs": ["runs", "datasets", "fixtures"],
+      "rules": [
+        "runs are timestamped folders",
+        "telemetry stored as JSONL",
+        "findings stored as JSON",
+        "summary stored as Markdown",
+        "never rewrite past run outputs"
+      ]
+    },
+    "ops": {
+      "required_files": ["CONTRIBUTING.md", "RELEASE.md", "VERSIONING.md"],
+      "ci": ["lint", "tests", "snapshot_validation"]
+    }
+  },
+  "append_only_rules": {
+    "append_only_paths": ["codex/artifacts/sssp", "evidence/runs", "peer_tensor_storage"],
+    "mutable_allowed": ["drafts", "working_notes", "refactors_that_preserve_history_elsewhere"]
+  },
+  "identifiers": {
+    "sssp_filename_pattern": "SSSP_<ISO8601>__v<semver>.md",
+    "adr_filename_pattern": "ADR_<4digits>__<kebab>.md",
+    "finding_id_pattern": "FND_<YYYY-MM-DD>__<kind>__sample-<###>"
+  },
+  "schemas": {
+    "sssp_fields": [
+      "state_classification",
+      "temporal_marker",
+      "core_realizations",
+      "peer_tensor_delta",
+      "operational_model",
+      "hypothesis_state",
+      "respawn_result",
+      "hash_of_previous_snapshot"
+    ],
+    "telemetry_event_fields": [
+      "ts",
+      "session_id",
+      "mode",
+      "lens",
+      "tension",
+      "tags",
+      "payload",
+      "source"
+    ],
+    "finding_fields": ["kind", "severity", "text_span", "suggestion", "axiom_refs"]
+  },
+  "cli": {
+    "commands": [
+      { "name": "lint", "args": ["<text|file>"], "outputs": ["findings.json", "summary"] },
+      { "name": "sssp:create", "args": [], "outputs": ["new SSSP file", "hash chaining"] },
+      { "name": "tensor:add", "args": ["<entry>"], "outputs": ["sqlite append-only write"] },
+      { "name": "replay", "args": ["<run_folder>"], "outputs": ["reconstructed summary from evidence"] },
+      { "name": "validate", "args": [], "outputs": ["schema checks", "append-only integrity checks"] }
+    ]
+  },
+  "storage": {
+    "sqlite": {
+      "db_file": "data/aegis-codex.sqlite",
+      "tables": [
+        {
+          "name": "peer_tensor",
+          "purpose": "append-only ledger entries",
+          "fields": ["id", "ts", "scope", "tags", "content", "resonance", "source", "hash_prev", "hash_self"]
+        },
+        {
+          "name": "sessions",
+          "purpose": "track run/session ids",
+          "fields": ["id", "created_ts"]
+        }
+      ]
+    }
+  },
+  "quality_constraints": [
+    "generate complete runnable code not snippets",
+    "include migrations and schema.sql",
+    "include tests for hash chaining and schema validation",
+    "all outputs deterministic where possible",
+    "document how to run CLI and where evidence is written"
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Finding",
+  "type": "object",
+  "required": [
+    "kind",
+    "severity",
+    "text_span",
+    "suggestion"
+  ],
+  "properties": {
+    "kind": {
+      "type": "string"
+    },
+    "severity": {
+      "type": "string"
+    },
+    "text_span": {
+      "type": "string"
+    },
+    "suggestion": {
+      "type": "string"
+    },
+    "axiom_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

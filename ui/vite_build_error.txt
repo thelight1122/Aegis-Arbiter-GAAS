@@ -1,0 +1,58 @@
+﻿node.exe : node:internal/mo
+dules/cjs/loader:1451
+At line:1 char:1
++ & "C:\Program 
+Files\nodejs/node.exe" 
+"C:\Program 
+Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~
+    + CategoryInfo         
+     : NotSpecified: (nod  
+  e:internal/modules/cjs   
+ /loader:1451:String) [    
+], RemoteException
+    + FullyQualifiedErrorI 
+   d : NativeCommandError
+ 
+  throw err;
+  ^
+
+Error: Cannot find module '
+H:\aegis-arbiter-GAAS\node_
+modules\aegis-arbiter-ui\no
+de_modules\vite\bin\vite.js
+'
+    at 
+Module._resolveFilename (no
+de:internal/modules/cjs/loa
+der:1448:15)
+    at defaultResolveImpl (
+node:internal/modules/cjs/l
+oader:1059:19)
+    at 
+resolveForCJSWithHooks (nod
+e:internal/modules/cjs/load
+er:1064:22)
+    at Module._load (node:i
+nternal/modules/cjs/loader:
+1234:25)
+    at 
+TracingChannel.traceSync (n
+ode:diagnostics_channel:328
+:14)
+    at wrapModuleLoad (node
+:internal/modules/cjs/loade
+r:245:24)
+    at Module.executeUserEn
+tryPoint [as runMain] (node
+:internal/modules/run_main:
+154:5)
+    at node:internal/main/r
+un_main_module:33:47 {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: []
+}
+
+Node.js v24.13.1

@@ -1,5 +1,5 @@
-import { TensorRepository } from "../../src/kernal/storage/tensorRepository.js";
-import { ConvergenceEngine } from "../../src/modules/arbiter/convergenceEngine.js";
+import { TensorRepository } from "../../ui/kernel/storage/tensorRepository.js";
+import { ConvergenceEngine } from "../../ui/src/modules/arbiter/convergenceEngine.js";
 
 /**
  * The Arbiter Controller coordinates two sovereign systems.

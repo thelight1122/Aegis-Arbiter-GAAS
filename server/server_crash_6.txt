@@ -1,0 +1,157 @@
+﻿node : H:\aegis-arbiter-GAA
+S\node_modules\bindings\bin
+dings.js:126
+At line:1 char:12
++ cd server; node 
+--enable-source-maps 
+dist/server/src/index.js 
+2>&1 |  ...
++            ~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~
+    + CategoryInfo         
+     : NotSpecified: (H:\  
+  aegis-arbite...binding   
+ s.js:126:String) [], R    
+emoteException
+    + FullyQualifiedErrorI 
+   d : NativeCommandError
+ 
+  err = new Error(
+        ^
+
+Error: Could not locate 
+the bindings file. Tried:
+ ΓåÆ H:\aegis-arbiter-GAAS\
+node_modules\better-sqlite3
+\build\better_sqlite3.node
+ ΓåÆ H:\aegis-arbiter-GAAS\
+node_modules\better-sqlite3
+\build\Debug\better_sqlite3
+.node
+ ΓåÆ H:\aegis-arbiter-GAAS\
+node_modules\better-sqlite3
+\build\Release\better_sqlit
+e3.node
+ ΓåÆ H:\aegis-arbiter-GAAS\
+node_modules\better-sqlite3
+\out\Debug\better_sqlite3.n
+ode
+ ΓåÆ H:\aegis-arbiter-GAAS\
+node_modules\better-sqlite3
+\Debug\better_sqlite3.node
+ ΓåÆ H:\aegis-arbiter-GAAS\
+node_modules\better-sqlite3
+\out\Release\better_sqlite3
+.node
+ ΓåÆ H:\aegis-arbiter-GAAS\
+node_modules\better-sqlite3
+\Release\better_sqlite3.nod
+e
+ ΓåÆ H:\aegis-arbiter-GAAS\
+node_modules\better-sqlite3
+\build\default\better_sqlit
+e3.node
+ ΓåÆ H:\aegis-arbiter-GAAS\
+node_modules\better-sqlite3
+\compiled\24.13.1\win32\x64
+\better_sqlite3.node
+ ΓåÆ H:\aegis-arbiter-GAAS\
+node_modules\better-sqlite3
+\addon-build\release\instal
+l-root\better_sqlite3.node
+ ΓåÆ H:\aegis-arbiter-GAAS\
+node_modules\better-sqlite3
+\addon-build\debug\install-
+root\better_sqlite3.node
+ ΓåÆ H:\aegis-arbiter-GAAS\
+node_modules\better-sqlite3
+\addon-build\default\instal
+l-root\better_sqlite3.node
+ ΓåÆ H:\aegis-arbiter-GAAS\
+node_modules\better-sqlite3
+\lib\binding\node-v137-win3
+2-x64\better_sqlite3.node
+    at bindings (H:\aegis-a
+rbiter-GAAS\node_modules\bi
+ndings\bindings.js:126:9)
+    at new Database (H:\aeg
+is-arbiter-GAAS\node_module
+s\better-sqlite3\lib\databa
+se.js:48:64)
+    at <anonymous> (H:\aegi
+s-arbiter-GAAS\server\src\i
+ndex.ts:42:12)
+    at ModuleJob.run (node:
+internal/modules/esm/module
+_job:430:25)
+    at async onImport.trace
+Promise.__proto__ (node:int
+ernal/modules/esm/loader:66
+1:26)
+    at async asyncRunEntryP
+ointWithESMLoader (node:int
+ernal/modules/run_main:101:
+5) {
+  tries: [
+    'H:\\aegis-arbiter-GAAS
+\\node_modules\\better-sqli
+te3\\build\\better_sqlite3.
+node',
+    'H:\\aegis-arbiter-GAAS
+\\node_modules\\better-sqli
+te3\\build\\Debug\\better_s
+qlite3.node',
+    'H:\\aegis-arbiter-GAAS
+\\node_modules\\better-sqli
+te3\\build\\Release\\better
+_sqlite3.node',
+    'H:\\aegis-arbiter-GAAS
+\\node_modules\\better-sqli
+te3\\out\\Debug\\better_sql
+ite3.node',
+    'H:\\aegis-arbiter-GAAS
+\\node_modules\\better-sqli
+te3\\Debug\\better_sqlite3.
+node',
+    'H:\\aegis-arbiter-GAAS
+\\node_modules\\better-sqli
+te3\\out\\Release\\better_s
+qlite3.node',
+    'H:\\aegis-arbiter-GAAS
+\\node_modules\\better-sqli
+te3\\Release\\better_sqlite
+3.node',
+    'H:\\aegis-arbiter-GAAS
+\\node_modules\\better-sqli
+te3\\build\\default\\better
+_sqlite3.node',
+    'H:\\aegis-arbiter-GAAS
+\\node_modules\\better-sqli
+te3\\compiled\\24.13.1\\win
+32\\x64\\better_sqlite3.nod
+e',
+    'H:\\aegis-arbiter-GAAS
+\\node_modules\\better-sqli
+te3\\addon-build\\release\\
+install-root\\better_sqlite
+3.node',
+    'H:\\aegis-arbiter-GAAS
+\\node_modules\\better-sqli
+te3\\addon-build\\debug\\in
+stall-root\\better_sqlite3.
+node',
+    'H:\\aegis-arbiter-GAAS
+\\node_modules\\better-sqli
+te3\\addon-build\\default\\
+install-root\\better_sqlite
+3.node',
+    'H:\\aegis-arbiter-GAAS
+\\node_modules\\better-sqli
+te3\\lib\\binding\\node-v13
+7-win32-x64\\better_sqlite3
+.node'
+  ]
+}
+
+Node.js v24.13.1

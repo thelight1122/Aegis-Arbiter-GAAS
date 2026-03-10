@@ -1,7 +1,9 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "lib": ["ES2022"],
+    "lib": [
+      "ES2022"
+    ],
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "verbatimModuleSyntax": true,
@@ -15,7 +17,15 @@
     "forceConsistentCasingInFileNames": true,
     "noEmitOnError": true
   },
-  "include": ["src/**/*.ts", "../src/**/*.ts"],
-  "exclude": ["dist/**", "node_modules/**", "**/*.test.ts", "**/*.spec.ts"]
+  "include": [
+    "src/**/*.ts",
+    "../ui/kernel/**/*.ts",
+    "../ui/src/modules/**/*.ts"
+  ],
+  "exclude": [
+    "dist/**",
+    "node_modules/**",
+    "**/*.test.ts",
+    "**/*.spec.ts"
+  ]
 }
-

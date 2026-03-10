@@ -1,4 +1,4 @@
-import { TensorRepository } from "../../src/kernal/storage/tensorRepository.js";
+import { TensorRepository } from "../../ui/kernel/storage/tensorRepository.js";
 
 /**
  * The Ledger endpoint provides access to the Logic Spine.
@@ -11,7 +11,7 @@ export function ledgerMiddleware(repo: TensorRepository) {
     try {
       // Retrieve ST tensors (Stable Spine)
       const spine = await repo.getSpine(sessionId as string, 50);
-      
+
       res.json({
         ok: true,
         session_id: sessionId,

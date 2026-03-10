@@ -1,0 +1,1 @@
+﻿src/services/aegisService.ts(30,30): error TS2339: Property 'env' does not exist on type 'ImportMeta'.

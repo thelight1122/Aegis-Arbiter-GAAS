@@ -1,0 +1,65 @@
+﻿node.exe : npm error 
+code 1
+At line:1 char:173
++ ... biter-GAAS; & 
+$node $npm install 
+better-sqlite3 
+--workspace=aegis-arb 
+...
++                 ~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~
+    + CategoryInfo     
+         : 
+NotSpecified: (npm     
+error code 1:String)   
+  [], RemoteException
+    + 
+FullyQualifiedErrorI   
+ d : NativeCommandError
+ 
+npm error path H:\aegis
+-arbiter-GAAS\node_modu
+les\better-sqlite3
+npm error command 
+failed
+npm error command C:\Wi
+ndows\System32\WindowsP
+owerShell\v1.0\powershe
+ll.exe -c 
+prebuild-install || 
+node-gyp rebuild 
+--release
+npm error At line:1 
+char:18
+npm error + 
+prebuild-install || 
+npm error node-gyp 
+rebuild --release
+npm error +            
+      ~~
+npm error The token 
+'||' is not a 
+npm error valid 
+statement separator 
+npm error in this 
+version.
+npm error     + 
+CategoryInfo         
+npm error      : 
+ParserError: (:) [  
+npm error   ], 
+ParentContainsError   
+npm error  
+RecordException
+npm error     + 
+FullyQualifiedErrorI 
+npm error    d : 
+InvalidEndOfLine
+npm error A complete 
+log of this run can be 
+found in: C:\Users\thel
+i\AppData\Local\npm-cac
+he\_logs\2026-03-10T03_
+43_54_860Z-debug-0.log

@@ -1,23 +1,16 @@
-export type Mode = "rbc" | "arbiter" | "lint";
+export type AegisMode = "rbc" | "arbiter" | "telemetry";
 
-export type AnalyzeRequest = {
-  mode: Mode;
-  prompt: string;
-  notepad: string;
+export type ToolSettings = {
+  mode: AegisMode;
+  autoCopyJson: boolean;
 };
 
-export type AnalyzeResponse = {
-  ok: boolean;
-  mode: Mode;
+export type AegisStatus =
+  | { ok: true; message: string }
+  | { ok: false; message: string };
+
+export type AnalysisResult = {
+  flagged: boolean;
   summary: string;
-  json: unknown;
-  timestamp: string;
-  elapsed_ms?: number;
-};
-
-export type PingResponse = {
-  ok: boolean;
-  status: "ready" | "degraded";
-  detail?: string;
-  timestamp: string;
+  json?: unknown;
 };

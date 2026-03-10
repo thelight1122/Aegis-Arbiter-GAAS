@@ -1,0 +1,76 @@
+﻿
+> aegis-arbiter@0.1.0 build
+> npm-run-all build:server build:ui
+
+
+> aegis-arbiter@0.1.0 build:server
+> npm run build -w aegis-arbiter-server
+
+
+> aegis-arbiter-server@0.1.0 build
+> tsc -p tsconfig.json
+
+
+> aegis-arbiter@0.1.0 build:ui
+> npm run build -w aegis-arbiter-ui
+
+
+> aegis-arbiter-ui@0.1.0 build
+> npm-run-all build-ts build-vite
+
+
+> aegis-arbiter-ui@0.1.0 build-ts
+> npx tsc
+
+src/services/aegisService.ts(30,30): error TS2339: Property 'env' does not exist on type 'ImportMeta'.
+node.exe : npm error 
+Lifecycle script 
+`build-ts` failed with 
+error:
+At line:1 char:1
++ & "C:\Program 
+Files\nodejs/node.exe" 
+"C:\Program 
+Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~
+    + CategoryInfo         
+     : NotSpecified: (npm  
+   error Lifec...led wit   
+ h error::String) [], R    
+emoteException
+    + FullyQualifiedErrorI 
+   d : NativeCommandError
+ 
+npm error code 1
+npm error path 
+H:\aegis-arbiter-GAAS\ui
+npm error workspace 
+aegis-arbiter-ui@0.1.0
+npm error location 
+H:\aegis-arbiter-GAAS\ui
+npm error command failed
+npm error command C:\Window
+s\System32\WindowsPowerShel
+l\v1.0\powershell.exe -c 
+npx tsc
+ERROR: "build-ts" exited 
+with 1.
+npm error Lifecycle script 
+`build` failed with error:
+npm error code 1
+npm error path 
+H:\aegis-arbiter-GAAS\ui
+npm error workspace 
+aegis-arbiter-ui@0.1.0
+npm error location 
+H:\aegis-arbiter-GAAS\ui
+npm error command failed
+npm error command C:\Window
+s\System32\WindowsPowerShel
+l\v1.0\powershell.exe -c 
+npm-run-all build-ts 
+build-vite
+ERROR: "build:ui" exited 
+with 1.

@@ -1,0 +1,17 @@
+{
+  "paths": {
+    "requirements_json": "codex/requirements/codex_requirements.v1.0.json",
+    "requirements_prompt": "codex/requirements/codex_build_prompt.v1.0.txt",
+    "codex_root": "codex",
+    "engine_root": "engine",
+    "evidence_root": "evidence",
+    "ops_root": "ops",
+    "sqlite_db_file": "data/aegis-codex.sqlite",
+    "evidence_runs_root": "evidence/runs"
+  },
+  "project": {
+    "name": "AEGIS Codex Environment",
+    "version": "v1.0",
+    "priority": "quality_over_efficiency"
+  }
+}
