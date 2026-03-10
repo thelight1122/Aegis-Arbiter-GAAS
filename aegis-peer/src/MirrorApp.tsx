@@ -226,7 +226,7 @@ export const MirrorApp: React.FC = () => {
             </div>
             <canvas className="mirror-waveform" ref={canvasRef} width={520} height={80} />
             <p className="mirror-muted">
-              {transcript ?? reflection || "Transcript will appear here when audio capture is enabled."}
+              {(transcript ?? reflection) || "Transcript will appear here when audio capture is enabled."}
             </p>
             {recorder.mode && (
               <p className="mirror-recording">
@@ -319,7 +319,7 @@ export const MirrorApp: React.FC = () => {
                 </div>
               ) : null}
 
-              {lastResponse && (
+              {lastResponse !== null && (
                 <div className="mirror-ids-block" style={{ marginTop: 16 }}>
                   <p className="mirror-insight-label">Raw response (debug)</p>
                   <pre
