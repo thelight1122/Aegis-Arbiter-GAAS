@@ -1,7 +1,33 @@
 {
   "permissions": {
     "allow": [
-      "mcp__Desktop_Commander__list_directory"
+      "mcp__Desktop_Commander__list_directory",
+      "mcp__Desktop_Commander__read_file",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(grep -E \"^-.*\\\\.md$\")",
+      "Read(//c/Users/theli/.claude/**)",
+      "Read(//c/Users/theli/.claude/plugins/cache/**)",
+      "Bash(find H:/aegis-arbiter-GAAS/docs/solutions -name *.md)",
+      "Bash(find H:/aegis-arbiter-GAAS/.claude -name *.md)",
+      "Bash(find /h/aegis-arbiter-GAAS -name intentGate*)",
+      "mcp__plugin_compound-engineering_context7__resolve-library-id",
+      "WebSearch",
+      "mcp__plugin_compound-engineering_context7__query-docs",
+      "WebFetch(domain:docs.litellm.ai)",
+      "WebFetch(domain:docs.nvidia.com)",
+      "WebFetch(domain:orq.ai)",
+      "WebFetch(domain:towardsai.net)",
+      "WebFetch(domain:portkey.ai)",
+      "WebFetch(domain:fdrechsler.de)",
+      "WebFetch(domain:cookbook.openai.com)",
+      "WebFetch(domain:developers.openai.com)",
+      "WebFetch(domain:medium.com)",
+      "WebFetch(domain:langfuse.com)",
+      "WebFetch(domain:ai-sdk.dev)",
+      "Bash(start \"\" \"H:/aegis-arbiter-GAAS/docs/plans/2026-03-16-feat-llm-governance-proxy-layer-plan.md\")",
+      "Bash(npm install:*)",
+      "Bash(npx tsc:*)",
+      "Bash(npm run:*)"
     ]
   }
 }
