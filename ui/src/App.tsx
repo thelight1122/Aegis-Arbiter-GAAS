@@ -2,11 +2,16 @@ import React, { useState } from "react";
 import ToolsPanel from "./components/ToolsPanel";
 import PeerRoot from "./components/PeerRoot.js";
 import ResultPanel from "./components/ResultPanel.js";
+import LLMGovernanceView from "./components/LLMGovernanceView.js";
 import { runAegisAnalysis } from "./services/aegisService";
 import type { AegisStatus, AnalysisResult, ToolSettings } from "./types";
 import "./App.css";
 
+type AppView = "analysis" | "llm";
+
 export default function App() {
+  const [view, setView] = useState<AppView>("analysis");
+
   const [settings, setSettings] = useState<ToolSettings>({
     mode: "rbc",
     autoCopyJson: false,
@@ -57,11 +62,30 @@ export default function App() {
             <div className="subtitle">Live Analyzer</div>
           </div>
 
+          <div className="tab-strip">
+            <button
+              className={`tab-btn${view === "analysis" ? " tab-btn--active" : ""}`}
+              onClick={() => setView("analysis")}
+            >
+              Analysis
+            </button>
+            <button
+              className={`tab-btn${view === "llm" ? " tab-btn--active" : ""}`}
+              onClick={() => setView("llm")}
+            >
+              LLM Governance
+            </button>
+          </div>
+
           <div className={`status ${status.ok ? "ok" : "error"}`}>
             <div className="status-title">Status</div>
             <div className="status-message">{status.message}</div>
           </div>
         </header>
+
+        {view === "llm" ? (
+          <LLMGovernanceView />
+        ) : (
 
         <div className="main-grid">
           <ToolsPanel
@@ -116,6 +140,8 @@ export default function App() {
             </section>
           </div>
         </div>
+
+        )}
       </div>
       <PeerRoot />
     </div>

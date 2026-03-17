@@ -62,6 +62,42 @@ body {
   font-size: 14px;
 }
 
+/* ---- Tab strip ---- */
+.tab-strip {
+  display: flex;
+  gap: 4px;
+  background: var(--panel2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 3px;
+  align-self: center;
+}
+
+.tab-btn {
+  background: transparent;
+  border: none;
+  border-radius: 7px;
+  color: var(--muted);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 6px 16px;
+  transition: background 150ms ease, color 150ms ease;
+  white-space: nowrap;
+}
+
+.tab-btn:hover {
+  color: var(--text);
+  background: var(--panel);
+}
+
+.tab-btn--active {
+  background: rgba(167, 139, 250, 0.18);
+  color: #c4b5fd;
+  font-weight: 600;
+}
+
 .status {
   border-radius: 14px;
   padding: 10px 12px;

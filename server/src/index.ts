@@ -1,5 +1,6 @@
 // FILE: server/src/index.ts
 import express from "express";
+import type { Request, Response, NextFunction } from "express";
 import cors from "cors";
 import Database from "better-sqlite3";
 import fs from "node:fs";
@@ -14,7 +15,11 @@ import { TensorRepository } from "../../ui/kernel/storage/tensorRepository.js";
 import { ResonanceService } from "../../ui/kernel/analysis/resonanceServices.js";
 import { MirrorManager } from "../../ui/src/modules/mirror/mirrorManager.js";
 import { SovereigntyProgressService } from "../../ui/src/modules/mirror/progressService.js";
+import { AuditBridge } from "../../ui/kernel/storage/auditBridge.js";
 import { witnessEmitter } from "../../ui/src/witness.js";
+
+import { LLMProviderFactory } from "./llm/providers/LLMProviderFactory.js";
+import { createLlmRouter } from "./routes/llm.js";
 
 const app = express();
 
@@ -25,7 +30,7 @@ function findRepoRoot(startDir: string): string {
   let current = startDir;
   while (current !== path.dirname(current)) {
     // Check for repo markers (ui/server) BUT ensure we aren't inside a 'dist' folder
-    if (fs.existsSync(path.join(current, "ui")) && 
+    if (fs.existsSync(path.join(current, "ui")) &&
         fs.existsSync(path.join(current, "server")) &&
         !current.toLowerCase().endsWith("dist")) {
       return current;
@@ -52,14 +57,55 @@ const schemaSql = fs.readFileSync(schemaPath, "utf8");
 db.exec(schemaSql);
 db.exec("CREATE TABLE IF NOT EXISTS sessions (id TEXT PRIMARY KEY);");
 
-const tensorRepo = new TensorRepository(db);
-const resonance = new ResonanceService(tensorRepo);
-const orchestrator = new ArbiterOrchestrator(tensorRepo, resonance, db);
-const mirrorManager = new MirrorManager(orchestrator);
+const tensorRepo      = new TensorRepository(db);
+const resonance       = new ResonanceService(tensorRepo);
+const orchestrator    = new ArbiterOrchestrator(tensorRepo, resonance, db);
+const mirrorManager   = new MirrorManager(orchestrator);
 const progressService = new SovereigntyProgressService(tensorRepo);
+const auditBridge     = new AuditBridge(db);
 
-app.use(cors());
+// ---------------------------------------------------------------------------
+// Security: CORS — locked to known UI origins.
+// Set AEGIS_CORS_ORIGINS=http://localhost:5173,http://localhost:5174 to extend.
+// ---------------------------------------------------------------------------
+const DEFAULT_ORIGINS = ["http://localhost:5173", "http://localhost:5174"];
+const allowedOrigins  = process.env["AEGIS_CORS_ORIGINS"]
+  ? process.env["AEGIS_CORS_ORIGINS"].split(",").map((s) => s.trim()).filter(Boolean)
+  : DEFAULT_ORIGINS;
+
+app.use(cors({
+  origin: (origin, callback) => {
+    // Allow server-to-server calls (no origin header) and known UI origins.
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error(`CORS: origin not allowed: ${origin}`));
+    }
+  },
+  credentials: true,
+}));
+
 app.use(express.json({ limit: "2mb" }));
+
+// ---------------------------------------------------------------------------
+// LLM Provider (singleton — created ONCE at startup)
+// If AEGIS_LLM_PROVIDER is not set, LLM routes return 503 but the rest of the
+// server remains fully operational.
+// ---------------------------------------------------------------------------
+let llmProvider: ReturnType<typeof LLMProviderFactory.create> | null = null;
+try {
+  llmProvider = LLMProviderFactory.create();
+  console.log(`[aegis-arbiter-server] LLM provider: ${llmProvider.displayName}`);
+} catch (err) {
+  console.warn(
+    "[aegis-arbiter-server] LLM provider not configured:",
+    err instanceof Error ? err.message : err,
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Routes
+// ---------------------------------------------------------------------------
 
 /**
  * Root route (useful when reverse-proxied by nginx as /api -> /)
@@ -71,8 +117,9 @@ app.get("/", (_req, res) => {
     service: "aegis-arbiter-server",
     status: "online",
     routes: {
-      ping: "/api/ping",
-      analyze: "/api/analyze"
+      ping:    "/api/ping",
+      analyze: "/api/analyze",
+      llm:     "/api/llm/*",
     },
     note:
       "This server is typically reverse-proxied. In Docker, the UI proxies /api/* to this service.",
@@ -103,7 +150,7 @@ app.get("/api/ping", (_req, res) => {
 app.get("/api/ledger", ledgerMiddleware(tensorRepo));
 
 app.get("/api/progress", async (req, res) => {
-  const sessionId = (req.query?.sessionId ?? "").toString();
+  const sessionId = (req.query?.["sessionId"] ?? "").toString();
   if (!sessionId) {
     return res.status(400).json({ ok: false, error: "Missing sessionId." });
   }
@@ -111,14 +158,14 @@ app.get("/api/progress", async (req, res) => {
   try {
     const trend = await progressService.getEvolutionTrend(sessionId);
     res.json({ ok: true, session_id: sessionId, trend });
-  } catch (error) {
+  } catch {
     res.status(500).json({ ok: false, error: "Progress Retrieval Fractured" });
   }
 });
 
 app.post("/api/mirror/reflect", async (req, res) => {
-  const sessionId = (req.body?.sessionId ?? "").toString();
-  const text = (req.body?.text ?? "").toString();
+  const sessionId = (req.body?.["sessionId"] ?? "").toString();
+  const text = (req.body?.["text"] ?? "").toString();
 
   if (!sessionId || !text) {
     return res.status(400).json({ ok: false, error: "Missing sessionId or text." });
@@ -148,9 +195,9 @@ app.post(
     limit: "50mb"
   }),
   async (req, res) => {
-    const sessionId = (req.query?.sessionId ?? "").toString();
+    const sessionId = (req.query?.["sessionId"] ?? "").toString();
     const sttUrl =
-      process.env.AEGIS_STT_URL?.trim() || "http://localhost:8000/transcribe";
+      process.env["AEGIS_STT_URL"]?.trim() || "http://localhost:8000/transcribe";
 
     if (!sessionId) {
       return res.status(400).json({ ok: false, error: "Missing sessionId." });
@@ -187,7 +234,7 @@ app.post(
 
       const result = await mirrorManager.reflect(sessionId, transcript);
       res.json({ ok: true, transcript, ...result });
-    } catch (error) {
+    } catch {
       res.status(500).json({ ok: false, error: "Mirror Media Reflection Fractured" });
     }
   }
@@ -199,8 +246,8 @@ app.get("/api/witness", (req, res) => {
   res.setHeader("Connection", "keep-alive");
   res.setHeader("X-Accel-Buffering", "no");
 
-  if (typeof (res as any).flushHeaders === "function") {
-    (res as any).flushHeaders();
+  if (typeof (res as unknown as { flushHeaders?: () => void }).flushHeaders === "function") {
+    (res as unknown as { flushHeaders: () => void }).flushHeaders();
   }
 
   const send = (payload: unknown) => {
@@ -220,33 +267,67 @@ app.get("/api/witness", (req, res) => {
   });
 });
 
-function buildSummary(json: any): string {
-  const mode = json?.mode ?? "rbc";
-  const flagged = Boolean(json?.flagged);
+function buildSummary(json: Record<string, unknown>): string {
+  const mode = json["mode"] ?? "rbc";
+  const flagged = Boolean(json["flagged"]);
 
-  const total = json?.score?.total;
-  const findingsCount = Array.isArray(json?.findings) ? json.findings.length : 0;
+  const total = json["score"] != null && typeof json["score"] === "object"
+    ? (json["score"] as Record<string, unknown>)["total"]
+    : undefined;
+  const findingsCount = Array.isArray(json["findings"]) ? json["findings"].length : 0;
 
   const base = flagged
     ? `⚠️ ${findingsCount} findings (see details)`
     : `✅ No issues found`;
 
-  return `${mode.toUpperCase()} ANALYSIS SUMMARY: ${base} (${total} total points)`;
+  return `${String(mode).toUpperCase()} ANALYSIS SUMMARY: ${base} (${total} total points)`;
 }
 
 app.post("/api/analyze", async (req, res) => {
   try {
-    const mode = (req.body?.mode ?? "rbc") as "rbc" | "arbiter" | "lint";
-    const prompt = (req.body?.prompt ?? "").toString();
-    const notepad = (req.body?.notepad ?? "").toString();
+    const mode = (req.body?.["mode"] ?? "rbc") as "rbc" | "arbiter" | "lint";
+    const prompt = (req.body?.["prompt"] ?? "").toString();
+    const notepad = (req.body?.["notepad"] ?? "").toString();
     const analysis = await runAegisCli({ mode, prompt, notepad });
-    res.json({ ok: true, summary: buildSummary(analysis), ...analysis });
-  } catch (error) {
+    res.json({ ok: true, summary: buildSummary(analysis as Record<string, unknown>), ...analysis });
+  } catch {
     res.status(500).json({ ok: false, error: "Aegis analysis failed." });
   }
 });
 
-const port = Number(process.env.PORT ?? 8787);
+// ---------------------------------------------------------------------------
+// LLM governance routes — only mounted when a provider is configured
+// ---------------------------------------------------------------------------
+if (llmProvider) {
+  app.use("/api/llm", createLlmRouter({
+    repo:        tensorRepo,
+    resonance,
+    auditBridge,
+    provider:    llmProvider,
+    db,
+  }));
+  console.log("[aegis-arbiter-server] LLM routes mounted at /api/llm");
+} else {
+  app.use("/api/llm", (_req, res) => {
+    res.status(503).json({
+      ok:    false,
+      error: "LLM provider not configured. Set AEGIS_LLM_PROVIDER and the corresponding API key.",
+    });
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Central error handler — MUST be the last app.use()
+// Never forwards internal error details to the client.
+// ---------------------------------------------------------------------------
+app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
+  console.error("[aegis-arbiter-server] unhandled error:", err.message);
+  if (!res.headersSent) {
+    res.status(500).json({ ok: false, error: "Internal server error" });
+  }
+});
+
+const port = Number(process.env["PORT"] ?? 8787);
 app.listen(port, () => {
   console.log(`[aegis-arbiter-server] listening on http://localhost:${port}`);
 });

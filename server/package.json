@@ -10,10 +10,13 @@
     "start": "node dist/server/src/index.js"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.79.0",
     "better-sqlite3": "^11.10.0",
     "cors": "^2.8.5",
     "express": "^4.19.2",
-    "js-tiktoken": "^1.0.15"
+    "express-rate-limit": "^8.3.1",
+    "js-tiktoken": "^1.0.15",
+    "openai": "^6.31.0"
   },
   "devDependencies": {
     "@ljharb/tsconfig": "^0.3.2",
