@@ -1,4 +1,4 @@
-// FILE: server/src/index.ts
+import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import Database from "better-sqlite3";
@@ -8,6 +8,7 @@ import { fileURLToPath } from "node:url";
 
 import { runAegisCli } from "./cliRunner.js";
 import { ledgerMiddleware } from "./ledger.js";
+import { verifyToken } from "./auth.js";
 
 import { ArbiterOrchestrator } from "../../ui/kernel/orchestrator.js";
 import { TensorRepository } from "../../ui/kernel/storage/tensorRepository.js";
@@ -100,9 +101,9 @@ app.get("/api/ping", (_req, res) => {
   });
 });
 
-app.get("/api/ledger", ledgerMiddleware(tensorRepo));
+app.get("/api/ledger", verifyToken, ledgerMiddleware(tensorRepo));
 
-app.get("/api/progress", async (req, res) => {
+app.get("/api/progress", verifyToken, async (req, res) => {
   const sessionId = (req.query?.sessionId ?? "").toString();
   if (!sessionId) {
     return res.status(400).json({ ok: false, error: "Missing sessionId." });
@@ -116,7 +117,7 @@ app.get("/api/progress", async (req, res) => {
   }
 });
 
-app.post("/api/mirror/reflect", async (req, res) => {
+app.post("/api/mirror/reflect", verifyToken, async (req, res) => {
   const sessionId = (req.body?.sessionId ?? "").toString();
   const text = (req.body?.text ?? "").toString();
 
@@ -136,6 +137,7 @@ app.post("/api/mirror/reflect", async (req, res) => {
 
 app.post(
   "/api/mirror/reflect-media",
+  verifyToken,
   express.raw({
     type: [
       "audio/webm",
@@ -234,7 +236,7 @@ function buildSummary(json: any): string {
   return `${mode.toUpperCase()} ANALYSIS SUMMARY: ${base} (${total} total points)`;
 }
 
-app.post("/api/analyze", async (req, res) => {
+app.post("/api/analyze", verifyToken, async (req, res) => {
   try {
     const mode = (req.body?.mode ?? "rbc") as "rbc" | "arbiter" | "lint";
     const prompt = (req.body?.prompt ?? "").toString();
