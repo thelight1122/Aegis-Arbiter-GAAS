@@ -5,26 +5,31 @@
 FROM node:20-alpine AS builder
 WORKDIR /build
 
-# better-sqlite3 needs build tools to compile native bindings
 RUN apk add --no-cache python3 make g++
 
-# Install all deps (workspace root lock file is authoritative)
 COPY package.json package-lock.json ./
 COPY server/package.json ./server/
 COPY ui/package.json ./ui/
 RUN npm ci
 
-# Compile TypeScript
 COPY server ./server
 COPY ui ./ui
 RUN npm run build:server
 
 # ── Stage 2: Runtime ───────────────────────────────────────────
 FROM node:20-alpine AS runtime
+
+# better-sqlite3 requires native compilation
+RUN apk add --no-cache python3 make g++
+
 WORKDIR /app
 
-# Copy compiled native modules from builder (already built for Alpine)
-COPY --from=builder /build/node_modules ./node_modules
+# Install production deps from server/package.json directly —
+# bypasses workspace symlinks that break ESM module resolution
+COPY server/package.json ./package.json
+RUN npm install --omit=dev --ignore-scripts=false
+
+RUN apk del python3 make g++
 
 # Compiled output
 COPY --from=builder /build/server/dist ./dist
