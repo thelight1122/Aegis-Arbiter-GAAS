@@ -8,6 +8,7 @@ WORKDIR /build
 # Install all deps (workspaces — root lock file is authoritative)
 COPY package.json package-lock.json ./
 COPY server/package.json ./server/
+COPY ui/package.json ./ui/
 RUN npm ci
 
 # Source
