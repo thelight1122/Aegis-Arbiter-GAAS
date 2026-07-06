@@ -19,7 +19,9 @@ export class ArbiterConnection {
   }
 
   connect() {
-    this.ws = new WebSocket(this.config.url, {
+    // Ensure we connect to the daemon path, not the root
+    const url = this.config.url.replace(/\/?$/, "/daemon").replace(/\/daemon\/daemon$/, "/daemon");
+    this.ws = new WebSocket(url, {
       rejectUnauthorized: process.env.NODE_ENV !== "development",
     });
 

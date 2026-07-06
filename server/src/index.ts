@@ -1,10 +1,12 @@
 import "dotenv/config";
+import http from "node:http";
 import express from "express";
 import cors from "cors";
 import Database from "better-sqlite3";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { WebSocketServer, WebSocket } from "ws";
 
 import { runAegisCli } from "./cliRunner.js";
 import { ledgerMiddleware } from "./ledger.js";
@@ -249,6 +251,55 @@ app.post("/api/analyze", verifyToken, async (req, res) => {
 });
 
 const port = Number(process.env.PORT ?? 8787);
-app.listen(port, () => {
+const httpServer = http.createServer(app);
+
+// Daemon WebSocket endpoint — AEGIS GaaS clients connect here.
+// Accepts structural session metadata only. No content ever crosses this channel.
+const wss = new WebSocketServer({ server: httpServer, path: "/daemon" });
+
+interface DaemonSession {
+  id: string;
+  connectedAt: number;
+  activeSessions: Set<string>;
+}
+
+wss.on("connection", (ws: WebSocket) => {
+  const daemonSession: DaemonSession = {
+    id: crypto.randomUUID(),
+    connectedAt: Date.now(),
+    activeSessions: new Set(),
+  };
+
+  console.log(`[aegis-daemon] client connected (${daemonSession.id})`);
+
+  ws.on("message", (data: Buffer) => {
+    try {
+      const msg = JSON.parse(data.toString());
+
+      if (msg.type === "session:start" && msg.sessionId) {
+        daemonSession.activeSessions.add(msg.sessionId);
+        // Acknowledge — daemon uses this to confirm routing
+        ws.send(JSON.stringify({ type: "session:ack", sessionId: msg.sessionId }));
+      }
+    } catch {
+      // Malformed message — ignore
+    }
+  });
+
+  ws.on("close", () => {
+    console.log(`[aegis-daemon] client disconnected (${daemonSession.id})`);
+    daemonSession.activeSessions.clear();
+  });
+
+  ws.on("error", () => {
+    // Surface via close event
+  });
+
+  // Confirm connection with environment state
+  ws.send(JSON.stringify({ type: "env:ready", daemonId: daemonSession.id }));
+});
+
+httpServer.listen(port, () => {
   console.log(`[aegis-arbiter-server] listening on http://localhost:${port}`);
+  console.log(`[aegis-daemon] WebSocket endpoint at ws://localhost:${port}/daemon`);
 });

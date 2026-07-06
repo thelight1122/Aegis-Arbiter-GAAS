@@ -1,12 +1,15 @@
 import React, { useEffect, useState, useRef } from "react";
 import { AegisShield } from "./AegisShield";
 import { SettingsPanel } from "./SettingsPanel";
+import { IlluminationPanel } from "./IlluminationPanel";
+import type { IDSIllumination } from "./IlluminationPanel";
 import type { OverlayState } from "../../ipc/types";
 
 export function AegisOverlay() {
   const [state, setState] = useState<OverlayState>("dormant");
   const [provider, setProvider] = useState<string | null>(null);
   const [showSettings, setShowSettings] = useState(false);
+  const [illumination, setIllumination] = useState<IDSIllumination | null>(null);
   const dragStart = useRef<{ mx: number; my: number; wx: number; wy: number } | null>(null);
 
   useEffect(() => {
@@ -20,9 +23,14 @@ export function AegisOverlay() {
     aegis.onSessionEnd(() => {
       setProvider(null);
     });
+    aegis.onIllumination?.((ids: IDSIllumination) => {
+      // New illumination replaces any existing one — most recent wins
+      setIllumination(ids);
+    });
   }, []);
 
   const handleMouseDown = (e: React.MouseEvent) => {
+    if (showSettings) return;
     dragStart.current = {
       mx: e.screenX,
       my: e.screenY,
@@ -76,6 +84,14 @@ export function AegisOverlay() {
       }
     >
       <AegisShield state={state} />
+
+      {illumination && !showSettings && (
+        <IlluminationPanel
+          illumination={illumination}
+          onDismiss={() => setIllumination(null)}
+        />
+      )}
+
       {showSettings && (
         <SettingsPanel onClose={() => {
           (window as any).aegis?.closeSettings?.();
