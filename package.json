@@ -4,7 +4,8 @@
   "version": "0.1.0",
   "workspaces": [
     "server",
-    "ui"
+    "ui",
+    "client"
   ],
   "scripts": {
     "dev": "npm-run-all -p dev:server dev:ui",
